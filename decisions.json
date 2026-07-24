@@ -1,0 +1,27 @@
+{
+  "document": "C0_Conventions",
+  "decisions_count": 1,
+  "principles_count": 2,
+  "decisions": [
+    {
+      "decision_id": "1.1",
+      "component": "C0",
+      "type": "DECISION",
+      "raw_text": "Question. Illustrative only \u2014 this is the shape every Decision block takes. Options considered. Option A \u2014 stated plainly, with its appeal. Option B \u2014 the chosen one. Option C \u2014 a third, with why it l..."
+    }
+  ],
+  "principles": [
+    {
+      "principle_id": "GP-1",
+      "component": "C0",
+      "type": "GUIDING_PRINCIPLE",
+      "raw_text": "Trust through auditability, not prevention. Where a capability cannot or should not be technically prevented, the control is to make its use visible and accountable rather than to lock it away. The system does not pretend to prevent what it cannot; it guarantees that what happens is recorded, attrib..."
+    },
+    {
+      "principle_id": "GP-2",
+      "component": "C0",
+      "type": "GUIDING_PRINCIPLE",
+      "raw_text": "Name by system function, not company title. Roles are named for what they do to the system, not for who happens to hold them or which department they sit in. Company titles are personal and temporary; system functions are structural and permanent. Naming by function means a role need not be renamed ..."
+    }
+  ]
+}
