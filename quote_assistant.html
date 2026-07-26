@@ -82,11 +82,12 @@
         }
 
         .message-content {
-            max-width: 70%;
+            max-width: 85%;
             padding: 12px 16px;
             border-radius: 12px;
-            line-height: 1.4;
+            line-height: 1.5;
             font-size: 14px;
+            word-wrap: break-word;
         }
 
         .user .message-content {
@@ -187,10 +188,18 @@
             padding: 16px;
             border-radius: 8px;
             margin-top: 10px;
+            line-height: 1.6;
         }
 
         .price-recommendation strong {
             color: #667eea;
+            display: block;
+            margin-top: 8px;
+            margin-bottom: 4px;
+        }
+
+        .price-recommendation strong:first-child {
+            margin-top: 0;
         }
 
         .error {
@@ -215,7 +224,7 @@
             <input
                 type="text"
                 id="customerInput"
-                placeholder="Describe the customer (e.g., mid-market SaaS, fintech, 500 seats)..."
+                placeholder="Describe the customer (e.g., enterprise SaaS, fintech, 2000 seats)..."
                 onkeypress="handleKeyPress(event)"
             />
             <button onclick="sendRequest()">Get Quote</button>
@@ -302,12 +311,37 @@
                 const data = await response.json();
 
                 // Format the response
-                let responseText = `<strong>Analysis Results:</strong><div class="price-recommendation">`;
+                let responseText = `<strong>📊 Analysis Results:</strong><div class="price-recommendation">`;
                 responseText += `<strong>Segment:</strong> ${data.segment}<br>`;
                 responseText += `<strong>Industry:</strong> ${data.industry}<br>`;
                 responseText += `<strong>Estimated Seats:</strong> ${data.seats}<br>`;
                 responseText += `<strong>Modules:</strong> ${data.modules.length > 0 ? data.modules.join(", ") : "None specified"}<br>`;
-                responseText += `<strong>Confidence:</strong> ${(data.confidence * 100).toFixed(0)}%`;
+                responseText += `<strong>Confidence:</strong> ${(data.confidence * 100).toFixed(0)}%<br><br>`;
+
+                // Add comparable deals info
+                if (data.comparable_deals && data.comparable_deals.total > 0) {
+                    responseText += `<strong>📈 Comparable Market Data:</strong><br>`;
+                    responseText += `• Total Deals Analyzed: ${data.comparable_deals.total}<br>`;
+                    responseText += `• Average Price: $${data.comparable_deals.average_price.toLocaleString('en-US')}<br>`;
+                    responseText += `• Price Range: ${data.comparable_deals.price_range}<br><br>`;
+                } else {
+                    responseText += `<strong>📈 Market Data:</strong> No comparable deals available yet<br><br>`;
+                }
+
+                // Add price recommendation
+                if (data.price_recommendation) {
+                    responseText += `<strong>💡 AI Recommendation:</strong><br>`;
+                    responseText += `${data.price_recommendation}<br><br>`;
+                }
+
+                // Add price range
+                if (data.price_range) {
+                    responseText += `<strong>💰 Suggested Price Range:</strong><br>`;
+                    responseText += `• Low: $${data.price_range.low.toLocaleString('en-US')}<br>`;
+                    responseText += `• <span style="color: #667eea; font-weight: bold;">Recommended: $${data.price_range.recommended.toLocaleString('en-US')}</span><br>`;
+                    responseText += `• High: $${data.price_range.high.toLocaleString('en-US')}`;
+                }
+
                 responseText += `</div>`;
 
                 addMessage(responseText, false);
@@ -328,7 +362,7 @@
         }
 
         // Initial message
-        addMessage("Hi! 👋 I'm your Quote Assistant. Describe your customer and I'll recommend a price based on comparable deals.", false);
+        addMessage("Hi! 👋 I'm your Quote Assistant. Describe your customer and I'll recommend a price based on comparable deals from your database.", false);
     </script>
 </body>
 </html>
